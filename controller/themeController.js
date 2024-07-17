@@ -100,7 +100,7 @@ const getThemeProvider = async (req, res) => {
 const getThemeProviderByUserId = async (req, res) => {
     try {
         const themes = await themeService.findThemeByUserId(req.user._id);
-        if (!themes || themes.length === 0) {
+        if (!themes) {
             return res.status(404).json({
                 success: false,
                 message: CONSTANTS_MSG.THEMES_NOT_FOUND
@@ -108,7 +108,7 @@ const getThemeProviderByUserId = async (req, res) => {
         }
         res.status(200).json({
             success: true,
-            themes
+            data : themes
         });
     } catch (err) {
         res.status(500).json({

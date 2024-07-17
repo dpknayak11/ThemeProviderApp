@@ -53,9 +53,7 @@ const userRegister = async (req, res) => {
         await schema.validateAsync(req.body, {
             abortEarly: false
         });
-
         const { name, email, password, mobile } = req.body;
-
         const existEmailUser = await userService.getUserByEmail(email);
         if (existEmailUser) {
             return res.status(400).json({
@@ -71,13 +69,11 @@ const userRegister = async (req, res) => {
             password: hashedPassword,
             mobile
         };
-
         await userService.saveUser(newUser);
-
         res.status(201).json({
             success: true,
             message: CONSTANTS_MSG.REGISTRATION_SUCCESS_USER,
-            user: newUser
+            data: newUser
         });
     } catch (error) {
         console.error("Error creating user:", error);
@@ -138,7 +134,7 @@ const updateUser = async (req, res) => {
         res.status(200).json({
             success: true,
             message: CONSTANTS_MSG.UPDATED_SUCCESS,
-            user: updatedUser
+            data: updatedUser
         });
     } catch (error) {
         console.error("Error updating user:", error);
@@ -213,11 +209,12 @@ const userLogin = async (req, res) => {
         }
 
         const token = generateToken(user);
+        const data = { user, token }
         res.set('Authorization', `Bearer ${token}`);
         res.status(200).json({
             success: true,
             message: CONSTANTS_MSG.LOGIN_SUCCESS,
-            user, token
+            data
         });
     } catch (error) {
         console.error("Error logging in user:", error);

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const moment = require('moment');
 const ThemeSchema = new mongoose.Schema({
     siteName: {
         type: String,
@@ -62,6 +62,10 @@ const ThemeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    date: {
+        type: Number,
+        default: () => moment().startOf('day').unix() * 1000
     },
 });
 
